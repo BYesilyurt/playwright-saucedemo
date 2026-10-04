@@ -1,0 +1,25 @@
+{
+  "name": "playwright-saucedemo",
+  "version": "1.0.0",
+  "description": "End-to-end tests for saucedemo.com with Playwright and TypeScript",
+  "scripts": {
+    "test": "playwright test",
+    "report": "playwright show-report"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/BYesilyurt/playwright-saucedemo.git"
+  },
+  "keywords": ["playwright", "typescript", "e2e", "test-automation"],
+  "author": "Batuhan Yesilyurt",
+  "license": "MIT",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/BYesilyurt/playwright-saucedemo/issues"
+  },
+  "homepage": "https://github.com/BYesilyurt/playwright-saucedemo#readme",
+  "devDependencies": {
+    "@playwright/test": "^1.63.0",
+    "@types/node": "^26.6.4"
+  }
+}
