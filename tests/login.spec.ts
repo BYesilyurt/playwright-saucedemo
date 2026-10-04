@@ -1,37 +1,31 @@
 import { test, expect } from '@playwright/test';
+import { LoginPage } from '../pages/LoginPage';
 
 test.describe('Login', () => {
+  let loginPage: LoginPage;
+
   test.beforeEach(async ({ page }) => {
-    await page.goto('/');
+    loginPage = new LoginPage(page);
+    await loginPage.goto();
   });
 
   test('login with valid user', async ({ page }) => {
-    await page.getByTestId('username').fill('standard_user');
-    await page.getByTestId('password').fill('secret_sauce');
-    await page.getByTestId('login-button').click();
-
+    await loginPage.login('standard_user', 'secret_sauce');
     await expect(page).toHaveURL(/inventory/);
   });
 
-  test('shows error for wrong password', async ({ page }) => {
-    await page.getByTestId('username').fill('standard_user');
-    await page.getByTestId('password').fill('wrong_password');
-    await page.getByTestId('login-button').click();
-
-    await expect(page.getByTestId('error')).toContainText('do not match');
+  test('shows error for wrong password', async () => {
+    await loginPage.login('standard_user', 'wrong_password');
+    await expect(loginPage.errorMessage).toContainText('do not match');
   });
 
-  test('shows error for locked out user', async ({ page }) => {
-    await page.getByTestId('username').fill('locked_out_user');
-    await page.getByTestId('password').fill('secret_sauce');
-    await page.getByTestId('login-button').click();
-
-    await expect(page.getByTestId('error')).toContainText('locked out');
+  test('shows error for locked out user', async () => {
+    await loginPage.login('locked_out_user', 'secret_sauce');
+    await expect(loginPage.errorMessage).toContainText('locked out');
   });
 
-  test('shows error when username is empty', async ({ page }) => {
-    await page.getByTestId('login-button').click();
-
-    await expect(page.getByTestId('error')).toContainText('Username is required');
+  test('shows error when username is empty', async () => {
+    await loginPage.login('', '');
+    await expect(loginPage.errorMessage).toContainText('Username is required');
   });
 });
