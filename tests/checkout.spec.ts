@@ -1,40 +1,28 @@
-import { test, expect } from '@playwright/test';
-import { LoginPage } from '../pages/LoginPage';
-import { InventoryPage } from '../pages/InventoryPage';
-import { CartPage } from '../pages/CartPage';
-import { CheckoutPage } from '../pages/CheckoutPage';
+import { test, expect } from '../fixtures/base';
+import { users } from '../test-data/users';
 
 test.describe('Checkout', () => {
-  let inventoryPage: InventoryPage;
-  let cartPage: CartPage;
-  let checkoutPage: CheckoutPage;
-
-  test.beforeEach(async ({ page }) => {
-    const loginPage = new LoginPage(page);
+  test.beforeEach(async ({ loginPage, inventoryPage, cartPage }) => {
     await loginPage.goto();
-    await loginPage.login('standard_user', 'secret_sauce');
-    inventoryPage = new InventoryPage(page);
-    cartPage = new CartPage(page);
-    checkoutPage = new CheckoutPage(page);
-
+    await loginPage.login(users.standard.username, users.standard.password);
     await inventoryPage.addToCart('sauce-labs-backpack');
     await inventoryPage.addToCart('sauce-labs-bike-light');
     await inventoryPage.openCart();
     await cartPage.checkout();
   });
 
-  test('completes an order', async () => {
+  test('completes an order', async ({ checkoutPage }) => {
     await checkoutPage.fillInformation('Max', 'Mustermann', '30159');
     await checkoutPage.finish();
     await expect(checkoutPage.completeHeader).toHaveText('Thank you for your order!');
   });
 
-  test('shows error when first name is missing', async () => {
+  test('shows error when first name is missing', async ({ checkoutPage }) => {
     await checkoutPage.fillInformation('', 'Mustermann', '30159');
     await expect(checkoutPage.errorMessage).toContainText('First Name is required');
   });
 
-  test('calculates the total price correctly', async ({ page }) => {
+  test('calculates the total price correctly', async ({ page, checkoutPage }) => {
     await checkoutPage.fillInformation('Max', 'Mustermann', '30159');
     await expect(page).toHaveURL(/checkout-step-two/);
     await expect(checkoutPage.itemPrices).toHaveCount(2);

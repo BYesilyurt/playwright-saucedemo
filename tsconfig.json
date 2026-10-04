@@ -7,5 +7,5 @@
     "skipLibCheck": true,
     "types": ["node"]
   },
-  "include": ["tests", "pages", "playwright.config.ts"]
+  "include": ["tests", "pages", "fixtures", "test-data", "playwright.config.ts"]
 }
