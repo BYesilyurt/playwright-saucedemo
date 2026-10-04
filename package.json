@@ -10,7 +10,12 @@
     "type": "git",
     "url": "git+https://github.com/BYesilyurt/playwright-saucedemo.git"
   },
-  "keywords": ["playwright", "typescript", "e2e", "test-automation"],
+  "keywords": [
+    "playwright",
+    "typescript",
+    "e2e",
+    "test-automation"
+  ],
   "author": "Batuhan Yesilyurt",
   "license": "MIT",
   "type": "commonjs",
@@ -20,6 +25,7 @@
   "homepage": "https://github.com/BYesilyurt/playwright-saucedemo#readme",
   "devDependencies": {
     "@playwright/test": "^1.63.0",
-    "@types/node": "^26.6.4"
+    "@types/node": "^26.6.4",
+    "typescript": "^7.0.2"
   }
 }
